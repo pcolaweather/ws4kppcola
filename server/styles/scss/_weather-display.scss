@@ -113,15 +113,28 @@
 
 	.scroll {
 		@include u.text-shadow(3px, 1.5px);
-		width: 640px;
-		height: 70px;
 		overflow: hidden;
 		margin-top: 10px;
+		font-family: 'Star4000';
+		font-size: 24pt;
+
+		>div {
+			width: 640px;
+			height: 70px;
+		}
 
 		.fixed {
-			font-family: 'Star4000';
-			font-size: 24pt;
 			margin-left: 55px;
+		}
+
+		.scroll-text {
+			display: none;
+			background-color: rgb(112, 35, 35);
+
+			.scrolling {
+				margin-left: 55px;
+				white-space: nowrap;
+			}
 		}
 	}
 }

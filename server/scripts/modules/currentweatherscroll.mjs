@@ -1,24 +1,19 @@
 import { locationCleanup } from './utils/string.mjs';
 import { elemForEach } from './utils/elem.mjs';
 import getCurrentWeather from './currentweather.mjs';
+import getHazards from './hazards.mjs';
 import { currentDisplay } from './navigation.mjs';
 
 // constants
 const degree = String.fromCharCode(176);
 
 // local variables
-let interval;
 let screenIndex = 0;
 
 // start drawing conditions
 // reset starts from the first item in the text scroll list
 const start = () => {
 	// store see if the context is new
-
-	// set up the interval if needed
-	if (!interval) {
-		interval = setInterval(incrementInterval, 4000);
-	}
 
 	// draw the data
 	drawScreen();
@@ -44,15 +39,61 @@ const incrementInterval = () => {
 const drawScreen = async () => {
 	// get the conditions
 	const data = await getCurrentWeather(() => this.stillWaiting());
+	const hazards = await getHazards(() => this.stillWaiting());
+
+	// combine data
+	data.hazards = hazards;
 
 	// nothing to do if there's no data yet
 	if (!data) return;
 
-	drawCondition(screens[screenIndex](data));
+	const toDraw = screens[screenIndex](data, incrementInterval);
+
+	// nothing to draw (typically hazards)
+	if (toDraw === false) {
+		// call the next item now
+		incrementInterval();
+	}
+
+	// normal 1-page condition
+	if (typeof toDraw === 'string') {
+		elemForEach('.weather-display .scroll .fixed', (elem) => {
+			elem.style.display = 'block';
+		});
+		elemForEach('.weather-display .scroll .scroll', (elem) => {
+			elem.style.display = 'none';
+		});
+		drawCondition(toDraw);
+		setTimeout(incrementInterval, 4000);
+	} else {
+		// scrolling
+		elemForEach('.weather-display .scroll .fixed', (elem) => {
+			elem.style.display = 'none';
+		});
+		elemForEach('.weather-display .scroll .scroll-text', (elem) => {
+			elem.style.display = 'block';
+		});
+		drawCondition(toDraw.text, 'scrolling');
+	}
+};
+
+const hazards = (data, done) => {
+	// test for data
+	if (!data.hazards || data.hazards.length === 0) return false;
+
+	const hazard = `${data.hazards[0].properties.event} ${data.hazards[0].properties.description}`;
+
+	setTimeout(done, 1000);
+
+	return {
+		text: hazard,
+	};
 };
 
 // the "screens" are stored in an array for easy addition and removal
 const screens = [
+	// hazards
+	hazards,
 	// station name
 	(data) => `Conditions at ${locationCleanup(data.station.properties.name).substr(0, 20)}`,
 
@@ -92,12 +133,13 @@ const screens = [
 ];
 
 // internal draw function with preset parameters
-const drawCondition = (text) => {
+const drawCondition = (text, selector = 'fixed') => {
 	// update all html scroll elements
-	elemForEach('.weather-display .scroll .fixed', (elem) => {
+	elemForEach(`.weather-display .scroll .${selector}`, (elem) => {
 		elem.innerHTML = text;
 	});
 };
+
 document.addEventListener('DOMContentLoaded', () => {
 	start();
 });
