@@ -137,5 +137,15 @@
 				white-space: nowrap;
 			}
 		}
+
+		.scroll-text {
+			display: none;
+			background-color: rgb(112, 35, 35);
+
+			.scrolling {
+				margin-left: 55px;
+				white-space: nowrap;
+			}
+		}
 	}
 }
