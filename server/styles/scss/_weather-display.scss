@@ -118,7 +118,8 @@
 		font-family: 'Star4000';
 		font-size: 24pt;
 
-		>div {
+		.fixed,
+		.scroll-text {
 			width: 640px;
 			height: 70px;
 		}

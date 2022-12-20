@@ -83,7 +83,7 @@ const hazards = (data, done) => {
 
 	const hazard = `${data.hazards[0].properties.event} ${data.hazards[0].properties.description}`;
 
-	setTimeout(done, 1000);
+	setTimeout(() => done(), 1000);
 
 	return {
 		text: hazard,

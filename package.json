@@ -22,7 +22,9 @@
 	"devDependencies": {
 		"del": "^6.0.0",
 		"ejs": "^3.1.5",
+		"eslint": "^8.21.0",
 		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.26.0",
 		"express": "^4.17.1",
 		"gulp": "^4.0.2",
 		"gulp-concat": "^2.6.1",
@@ -40,9 +42,9 @@
 		"suncalc": "^1.8.0",
 		"swiped-events": "^1.1.4",
 		"terser-webpack-plugin": "^5.3.6",
-		"webpack-stream": "^7.0.0",
-		"eslint": "^8.21.0",
-		"eslint-plugin-import": "^2.26.0"
+		"webpack-stream": "^7.0.0"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"npm": "^9.2.0"
+	}
 }
