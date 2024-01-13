@@ -21,7 +21,7 @@ There are a lot of CORS considerations and issues with api.weather.gov that are 
 
 To run via Node locally:
 ```
-git clone https://github.com/netbymatt/ws4kp.git
+git clone https://github.com/pcolaweather/ws4kppcola.git
 cd ws4kp
 npm i
 node index.js
@@ -29,7 +29,7 @@ node index.js
 
 To run via Docker: 
 ```
-docker run -p 8080:8080 ghcr.io/netbymatt/ws4kp
+docker run -p 8080:8080 ghcr.io/pcolaweather/ws4kppcola
 ```
 Open your web browser: http://localhost:8080/ 
 
